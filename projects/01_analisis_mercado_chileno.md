@@ -33,7 +33,17 @@ Construir un pipeline de análisis de datos sobre acciones del IPSA (Índice de 
 | COPEC.SN | -11.6% |
 | CMPC.SN | -37.2% |
 
-*Análisis estadístico completo en desarrollo.*
+### Estadística descriptiva de retornos diarios
+
+| Activo | Retorno diario promedio | Volatilidad diaria | Sharpe simplificado |
+|---|---|---|---|
+| FALABELLA.SN | +0.17% | 1.69% | +0.101 |
+| COPEC.SN | -0.02% | 1.50% | -0.012 |
+| CMPC.SN | -0.08% | 1.71% | -0.049 |
+
+Falabella fue el único activo con retorno ajustado por riesgo positivo en el período. COPEC mostró menor volatilidad pero retorno negativo. CMPC presentó la peor relación retorno/riesgo.
+
+*Nota: Sharpe simplificado calculado sin deducción de tasa libre de riesgo.*
 
 ## Herramientas
 
