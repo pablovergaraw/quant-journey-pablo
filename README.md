@@ -10,8 +10,8 @@ Estudiante de Ingeniería en la Pontificia Universidad Católica de Chile, con o
 
 | # | Proyecto | Herramientas | Estado |
 |---|---|---|---|
-| 01 | [Análisis Exploratorio del Mercado Accionario Chileno](projects/01_analisis_mercado_chileno.md) | Python · pandas · yfinance · matplotlib | En progreso |
-| 02 | Optimización de Portafolio — Modelo de Markowitz | Python · numpy · scipy | Pendiente |
+| 01 | [Análisis Exploratorio del Mercado Accionario Chileno](projects/01_analisis_mercado_chileno.md) | Python · pandas · yfinance · matplotlib · seaborn | Completado |
+| 02 | [Optimización de Portafolio — Modelo de Markowitz](projects/02_markowitz.md) | Python · numpy · pandas · matplotlib | En progreso |
 
 ---
 
