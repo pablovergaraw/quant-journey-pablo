@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Construir un modelo de optimización de portafolio basado en la Teoría Moderna de Portafolios (Markowitz, 1952) aplicado a las acciones del IPSA analizadas en el Proyecto 01. El objetivo es identificar la combinación de pesos óptima que maximiza el retorno ajustado por riesgo (Sharpe ratio) y visualizar la frontera eficiente mediante simulación de Monte Carlo.
+Construir un modelo de optimización de portafolio basado en la Teoría Moderna de Portafolios (Markowitz, 1952) aplicado a las acciones del IPSA analizadas en el Proyecto 01. El objetivo es identificar la combinación de pesos óptima que maximiza el retorno ajustado por riesgo (Sharpe ratio) y trazar la frontera eficiente completa mediante dos enfoques: simulación de Monte Carlo y optimización analítica con scipy.
 
 ## Activos analizados
 
@@ -19,8 +19,9 @@ Construir un modelo de optimización de portafolio basado en la Teoría Moderna 
 1. Cálculo de retornos diarios y matriz de covarianza
 2. Definición de función de evaluación de portafolio: retorno esperado, volatilidad y Sharpe
 3. Simulación de Monte Carlo: 10.000 portafolios con pesos aleatorios normalizados
-4. Identificación del portafolio de máximo Sharpe
-5. Visualización de la nube de portafolios (frontera eficiente aproximada)
+4. Identificación del portafolio de máximo Sharpe vía Monte Carlo y optimización analítica (scipy)
+5. Trazado de la frontera eficiente analítica: minimización de volatilidad para 50 niveles de retorno objetivo usando `scipy.optimize.minimize`
+6. Visualización superpuesta: nube de Monte Carlo + frontera eficiente analítica
 
 ### Cálculo de métricas por portafolio
 
@@ -54,8 +55,8 @@ La concentración en Falabella refleja su desempeño superior en el período ana
 - Asume que los retornos históricos son representativos de los retornos futuros
 - No incluye tasa libre de riesgo en el cálculo del Sharpe
 - No permite venta corta (pesos restringidos al intervalo [0, 1])
-- La frontera eficiente se aproxima por simulación, no se calcula analíticamente
+- La frontera eficiente analítica asume retornos históricos como estimadores de retornos futuros
 
 ## Herramientas
 
-Python 3.13 · numpy · pandas · yfinance · matplotlib
+Python 3.12 · numpy · pandas · yfinance · matplotlib · scipy
