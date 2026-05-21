@@ -57,4 +57,72 @@ Repositorio de análisis cuantitativo aplicado al mercado accionario chileno. Cu
 
 ---
 
-*Próximo notebook: construcción de portafolio eficiente de Markowitz con las mismas 9 acciones. Notebook adicional: backtesting de estrategia de momentum en CAP.SN y BCI.SN a partir de la autocorrelación detectada.*
+## 02 — Optimización de Portafolio: Modelo de Markowitz
+
+**Notebook:** `02_markowitz.ipynb`  
+**Período:** Mayo 2024 – Mayo 2026  
+**Universo:** 9 acciones del IPSA — mismo universo del notebook 01  
+**Benchmark:** ECH (iShares MSCI Chile ETF)
+
+### Metodología
+
+- Descarga de precios históricos vía `yfinance` y cálculo de retornos diarios
+- Cálculo de vector de retornos medios y matriz de covarianza como insumos del modelo
+- **Simulación de Monte Carlo:** 10.000 portafolios con pesos aleatorios normalizados; visualización de la nube riesgo-retorno con gradiente de color por Sharpe ratio
+- **Optimización analítica — máximo Sharpe:** `scipy.optimize.minimize` minimizando el Sharpe negativo, con restricciones de suma unitaria y sin posiciones cortas
+- **Optimización analítica — mínima varianza:** minimización de la volatilidad sin restricción de retorno; identifica el portafolio de menor riesgo posible dentro del universo
+- Construcción de la **frontera eficiente analítica** minimizando volatilidad para 50 niveles de retorno objetivo; filtrado de la parte ineficiente por pendiente
+- Trazado de la **Capital Market Line (CML):** recta desde la TPM (~5.5% anual) tangente a la frontera en el portafolio de máximo Sharpe
+- Comparación con benchmark ECH (Sharpe diario)
+- Anualización de métricas: retorno × 252, volatilidad × √252
+- Cálculo de Sharpe real incorporando TPM como tasa libre de riesgo
+
+### Resultados
+
+**Portafolio óptimo (máximo Sharpe):**
+
+| Acción | Peso |
+|---|---|
+| BCI | ~40.4% |
+| Falabella | ~20.7% |
+| BancoSantander | ~17.2% |
+| Enelchile | ~12.1% |
+| Aguas Andinas | ~9.7% |
+| CAP, CMPC, COPEC, CENCOSUD | 0% |
+
+**Métricas anualizadas — portafolio de máximo Sharpe:**
+
+| Métrica | Valor |
+|---|---|
+| Sharpe ratio sin rf (anualizado) | ~2.10 |
+| Sharpe ratio real (rf = 5.5%) | ~1.79 |
+| Supera benchmark ECH en Sharpe | ~2.1x |
+
+**Portafolio de mínima varianza:**
+
+| Acción | Peso |
+|---|---|
+| Aguas Andinas | ~33.7% |
+| BancoSantander | ~16.3% |
+| Enelchile | ~15.7% |
+| CAP | ~15.1% |
+| CENCOSUD | ~8.0% |
+| COPEC | ~7.8% |
+| BCI | ~3.2% |
+| CMPC, Falabella | ~0% |
+
+El portafolio de mínima varianza concentra en AGUAS-A por ser el activo menos volátil del universo, diversificando el resto entre activos con baja covarianza. Sacrifica retorno esperado a cambio de minimizar la volatilidad total.
+
+### Limitaciones
+
+1. **Overfitting histórico:** el portafolio se calibra y evalúa sobre el mismo período. Los pesos óptimos pasados no garantizan rendimiento futuro.
+2. **Supuesto de normalidad:** Markowitz asume distribución normal de retornos, subestimando eventos extremos — inconsistente con el notebook 01 (leptokurtosis generalizada).
+3. **Parámetros estáticos:** la media y covarianza históricas pueden cambiar ante shocks macroeconómicos.
+
+### Herramientas
+
+`pandas` · `numpy` · `yfinance` · `scipy.optimize` · `matplotlib`
+
+---
+
+*Próximo notebook: backtesting con walk-forward validation — calibrar el modelo en un período y validar en el siguiente para estimar la robustez predictiva real. Notebook adicional: backtesting de estrategia de momentum en CAP.SN y BCI.SN a partir de la autocorrelación detectada en el notebook 01.*
