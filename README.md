@@ -1,8 +1,8 @@
 # Quant Journey — Pablo Vergara
 
-Portafolio de proyectos de análisis cuantitativo financiero aplicado al mercado chileno.
+Portafolio de proyectos de análisis cuantitativo financiero aplicado al mercado accionario chileno.
 
-Estudiante de Ingeniería en la Pontificia Universidad Católica de Chile, con orientación hacia Investigación Operativa y Data Science. Este repositorio documenta el desarrollo progresivo de herramientas cuantitativas para análisis de riesgo, optimización de portafolios y modelamiento financiero.
+Estudiante de la Pontificia Universidad Católica de Chile, con orientación hacia Ingeniería Comercial Industrial e Investigación Operativa. Este repositorio documenta el desarrollo progresivo de herramientas cuantitativas aplicadas a nueve acciones del IPSA: desde estadística descriptiva y pruebas de eficiencia de mercado hasta optimización de portafolios y gestión de riesgo.
 
 ---
 
@@ -10,8 +10,9 @@ Estudiante de Ingeniería en la Pontificia Universidad Católica de Chile, con o
 
 | # | Proyecto | Herramientas | Estado |
 |---|---|---|---|
-| 01 | [Análisis Exploratorio del Mercado Accionario Chileno](projects/01_analisis_mercado_chileno.md) | Python · pandas · yfinance · matplotlib · seaborn | Completado |
-| 02 | [Optimización de Portafolio — Modelo de Markowitz](projects/02_markowitz.md) | Python · numpy · pandas · matplotlib · scipy | Completado |
+| 01 | [Análisis Exploratorio del Mercado Accionario Chileno](projects/01_analisis_mercado_chileno.md) | pandas · yfinance · matplotlib · seaborn · scipy · statsmodels | Completado |
+| 02 | [Optimización de Portafolio — Modelo de Markowitz](projects/02_markowitz.md) | numpy · pandas · matplotlib · scipy.optimize | Completado |
+| 03 | [Métricas de Riesgo — VaR, CVaR y Drawdown](projects/03_riesgo.md) | pandas · numpy · matplotlib · seaborn · scipy.stats | Completado |
 
 ---
 
@@ -19,6 +20,7 @@ Estudiante de Ingeniería en la Pontificia Universidad Católica de Chile, con o
 
 - **Lenguajes:** Python
 - **Análisis de datos:** pandas, numpy
+- **Estadística:** scipy, statsmodels
 - **Visualización:** matplotlib, seaborn
 - **Datos de mercado:** Yahoo Finance API (yfinance)
 - **Entorno:** Jupyter Notebooks · VSCode

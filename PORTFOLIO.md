@@ -125,4 +125,84 @@ El portafolio de mínima varianza concentra en AGUAS-A por ser el activo menos v
 
 ---
 
-*Próximo notebook: backtesting con walk-forward validation — calibrar el modelo en un período y validar en el siguiente para estimar la robustez predictiva real. Notebook adicional: backtesting de estrategia de momentum en CAP.SN y BCI.SN a partir de la autocorrelación detectada en el notebook 01.*
+---
+
+## 03 — Métricas de Riesgo: VaR, CVaR y Drawdown
+
+**Notebook:** `03_riesgo.ipynb`  
+**Período:** Mayo 2024 – Mayo 2026  
+**Universo:** 9 acciones del IPSA — mismo universo de NB01 y NB02  
+**Benchmark:** ECH (iShares MSCI Chile ETF)
+
+### Metodología
+
+- Descarga de precios históricos vía `yfinance` y cálculo de retornos diarios
+- **VaR Histórico:** percentil empírico al 5% y 1% de la distribución de retornos. Sin supuesto distribucional.
+- **VaR Paramétrico:** `μ − z·σ`, con z = 1.645 (95%) y z = 2.326 (99%). Asume normalidad.
+- **VaR Monte Carlo:** 10.000 retornos simulados desde distribución normal calibrada con parámetros históricos. Semilla fija (`np.random.seed(42)`) para reproducibilidad.
+- **CVaR / Expected Shortfall:** promedio de retornos peores que el umbral VaR al 95% y 99%.
+- **Maximum Drawdown:** `(precio − cummax) / cummax` como curva temporal completa. Tabla resumen con MDD% por activo.
+- **Riesgo de portafolio:** retornos de cada portafolio NB02 como suma ponderada `Σ wᵢ · rᵢ`. Pesos cargados desde CSV exportado en NB02 para garantizar consistencia exacta.
+- **Los peores días:** top 10 caídas del portafolio de máximo Sharpe con retorno simultáneo del ECH.
+
+### Resultados
+
+**VaR individual — comparación de métodos (95%):**
+
+| Activo | VaR Histórico | VaR Paramétrico | Divergencia |
+|---|---|---|---|
+| AGUAS-A.SN | -1.88% | -1.95% | +0.07 pp |
+| BCI.SN | -2.28% | -2.45% | +0.17 pp |
+| CAP.SN | -2.65% | -2.72% | +0.07 pp |
+| CENCOSUD.SN | -2.79% | -2.70% | −0.09 pp |
+| CMPC.SN | -2.95% | -2.93% | −0.02 pp |
+
+La divergencia histórico–paramétrico es modesta al 95% y se amplifica en el percentil 99%, donde la leptokurtosis documentada en NB01 tiene mayor peso. Los tres métodos convergen en el rango central de la distribución y divergen en las colas.
+
+**Maximum Drawdown por activo:**
+
+| Activo | MDD |
+|---|---|
+| CMPC.SN | -46.8% |
+| CENCOSUD.SN | -37.9% |
+| CAP.SN | -34.3% |
+| COPEC.SN | -26.5% |
+| FALABELLA.SN | -20.9% |
+| ECH (benchmark) | -19.7% |
+| AGUAS-A.SN | -18.0% |
+| BCI.SN | -16.5% |
+| ENELCHILE.SN | -13.7% |
+| BSANTANDER.SN | -12.6% |
+
+**Comparación de portafolios NB02 — riesgo y retorno:**
+
+| Portafolio | Sharpe | VaR 95% | CVaR 95% | VaR 99% | CVaR 99% | MDD |
+|---|---|---|---|---|---|---|
+| Máximo Sharpe | 1.78 | -1.67% | -2.26% | -2.46% | -3.26% | -16.2% |
+| Mínima Varianza | 0.89 | -1.36% | -1.97% | -2.58% | -3.09% | -16.7% |
+| Pesos iguales | 0.73 | -1.55% | -2.07% | -2.56% | -3.15% | -15.5% |
+| ECH (benchmark) | 0.72 | -2.36% | -3.39% | -3.95% | -4.75% | -19.7% |
+
+**Hallazgos clave:**
+
+1. **Beneficio de diversificación:** el VaR 95% promedio de los activos individuales es −2.40%; el portafolio de mínima varianza alcanza −1.36%, una reducción del 43%. La diversificación intersectorial reduce el riesgo de forma significativa.
+
+2. **Límite de la optimización cuadrática:** la mínima varianza domina en VaR 95% pero no en VaR 99%. Minimizar la varianza (segundo momento) no protege las colas de la distribución (cuarto momento). En eventos extremos, la ventaja desaparece.
+
+3. **Máximo Sharpe como elección dominante:** ofrece una ratio retorno-riesgo 2x superior a la mínima varianza (1.78 vs 0.89) con un perfil de riesgo comparable en pérdidas extremas.
+
+4. **Peores días mayoritariamente sistémicos:** los 10 peores días del portafolio coinciden con caídas del ECH, lo que indica que los episodios extremos son shocks de mercado global, no idiosincrásicos del portafolio chileno.
+
+### Limitaciones
+
+1. **VaR histórico:** asume que el pasado reciente representa el futuro. Una ventana de dos años puede no capturar regímenes de estrés no observados.
+2. **Covarianza estática:** los pesos de NB02 se calcularon con correlaciones históricas fijas. En crisis, las correlaciones tienden a converger, reduciendo el beneficio de diversificación cuando más se necesita.
+3. **Sin out-of-sample:** calibración y evaluación sobre el mismo período. NB05 (GARCH) introducirá VaR dinámico; NB06 introducirá validación walk-forward.
+
+### Herramientas
+
+`pandas` · `numpy` · `yfinance` · `matplotlib` · `seaborn` · `scipy.stats`
+
+---
+
+*Próximo notebook (NB04): riesgo sistemático y beta — descomposición de los retornos del portafolio en componente de mercado (β) y alpha residual, mediante regresión OLS contra el benchmark ECH.*
